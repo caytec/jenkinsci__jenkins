@@ -74,7 +74,7 @@ public class Kernel32Utils {
         if (canonicalPath.length() < 260) {
             // path is short, use as-is
             path = canonicalPath;
-        } else if (canonicalPath.startsWith("\\\\")) {
+        } else if (file.getCanonicalFile().toPath().startsWith("\\\\")) {
             // network share
             // \\server\share --> \\?\UNC\server\share
             path = "\\\\?\\UNC\\" + canonicalPath.substring(2);

@@ -34,6 +34,7 @@ import hudson.ExtensionPoint;
 import hudson.init.Initializer;
 import hudson.triggers.SafeTimerTask;
 import hudson.triggers.Trigger;
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -120,7 +121,7 @@ public abstract class PeriodicWork extends SafeTimerTask implements ExtensionPoi
     protected static final long HOUR = 60 * MIN;
     protected static final long DAY = 24 * HOUR;
 
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new SecureRandom();
 
     /**
      * ExtensionListener that will kick off any new AperiodWork extensions from plugins that are dynamically

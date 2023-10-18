@@ -75,9 +75,7 @@ public class FakeMapBuilder implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                dir = File.createTempFile("lazyload", "test");
-                dir.delete();
-                dir.mkdirs();
+                dir = Files.createTempDirectory("lazyload" + "test").toFile();
                 try {
                     base.evaluate();
                 } finally {

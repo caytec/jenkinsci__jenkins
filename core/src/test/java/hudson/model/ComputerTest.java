@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import hudson.FilePath;
 import hudson.security.ACL;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import jenkins.model.Jenkins;
@@ -21,7 +22,7 @@ import org.springframework.security.core.Authentication;
 public class ComputerTest {
     @Test
     public void testRelocate() throws Exception {
-        File d = File.createTempFile("jenkins", "test");
+        File d = Files.createTempFile("jenkins", "test").toFile();
         FilePath dir = new FilePath(d);
         try {
             dir.delete();

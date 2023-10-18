@@ -28,6 +28,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -64,7 +65,7 @@ public abstract class Hash {
             for (int i = 0; i < 8; i++)
                 l = (l << 8) + (digest[i] & 0xFF);
 
-            final Random rnd = new Random(l);
+            final Random rnd = new SecureRandom();
             return new Hash() {
                 @Override
                 public int next(int n) {

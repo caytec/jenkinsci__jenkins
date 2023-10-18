@@ -698,7 +698,7 @@ public final class FilePath implements SerializableOnlyOverRemoting {
     }
 
     private static void unzip(File dir, InputStream in) throws IOException {
-        File tmpFile = File.createTempFile("tmpzip", null); // uses java.io.tmpdir
+        File tmpFile = Files.createTempFile("tmpzip", null).toFile(); // uses java.io.tmpdir
         try {
             // TODO why does this not simply use ZipInputStream?
             IOUtils.copy(in, tmpFile);
@@ -1547,7 +1547,7 @@ public final class FilePath implements SerializableOnlyOverRemoting {
      *      null, in which case the suffix ".tmp" will be used
      * @return
      *      The new FilePath pointing to the temporary file
-     * @see File#createTempFile(String, String)
+     * @see Files#createTempFile(String, String)#toFile()
      */
     public FilePath createTempFile(final String prefix, final String suffix) throws IOException, InterruptedException {
         try {
@@ -1570,7 +1570,7 @@ public final class FilePath implements SerializableOnlyOverRemoting {
 
         @Override
         public String invoke(File dir, VirtualChannel channel) throws IOException {
-            File f = File.createTempFile(prefix, suffix, dir);
+            File f = Files.createTempFile(dir.toPath(), prefix, suffix).toFile();
             return f.getName();
         }
     }
@@ -1589,7 +1589,7 @@ public final class FilePath implements SerializableOnlyOverRemoting {
      *      The initial contents of the temporary file.
      * @return
      *      The new FilePath pointing to the temporary file
-     * @see File#createTempFile(String, String)
+     * @see Files#createTempFile(String, String)#toFile()
      */
     public FilePath createTextTempFile(final String prefix, final String suffix, final String contents) throws IOException, InterruptedException {
         return createTextTempFile(prefix, suffix, contents, true);
@@ -1615,7 +1615,7 @@ public final class FilePath implements SerializableOnlyOverRemoting {
      *      directory (java.io.tmpdir)
      * @return
      *      The new FilePath pointing to the temporary file
-     * @see File#createTempFile(String, String)
+     * @see Files#createTempFile(String, String)#toFile()
      */
     public FilePath createTextTempFile(final String prefix, final String suffix, final String contents, final boolean inThisDirectory) throws IOException, InterruptedException {
         try {
@@ -1648,7 +1648,7 @@ public final class FilePath implements SerializableOnlyOverRemoting {
 
             File f;
             try {
-                f = File.createTempFile(prefix, suffix, dir);
+                f = Files.createTempFile(dir.toPath(), prefix, suffix).toFile();
             } catch (IOException e) {
                 throw new IOException("Failed to create a temporary directory in " + dir, e);
             }

@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Random;
 import java.util.logging.Level;
@@ -132,7 +133,7 @@ public class DoubleLaunchChecker extends AdministrativeMonitor {
     @Extension
     public static final class Schedule extends AperiodicWork {
 
-        private final Random random = new Random();
+        private final Random random = new SecureRandom();
 
         @Override
         public AperiodicWork getNewInstance() {

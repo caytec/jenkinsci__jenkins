@@ -330,7 +330,7 @@ public class DirectoryBrowserSupportTest {
 
     private File download(UnexpectedPage page) throws IOException {
 
-        File file = File.createTempFile("DirectoryBrowserSupport", "zipDownload");
+        File file = Files.createTempFile("DirectoryBrowserSupport", "zipDownload").toFile();
         file.delete();
         try (InputStream is = page.getInputStream();
              OutputStream os = Files.newOutputStream(file.toPath())) {

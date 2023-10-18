@@ -32,6 +32,7 @@ import hudson.ExtensionListListener;
 import hudson.ExtensionPoint;
 import hudson.init.Initializer;
 import hudson.triggers.SafeTimerTask;
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -116,7 +117,7 @@ public abstract class AperiodicWork extends SafeTimerTask implements ExtensionPo
         return ExtensionList.lookup(AperiodicWork.class);
     }
 
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new SecureRandom();
 
     /**
      * ExtensionListener that will kick off any new AperiodWork extensions from plugins that are dynamically

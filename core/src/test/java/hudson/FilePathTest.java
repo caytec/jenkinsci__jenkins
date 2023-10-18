@@ -217,7 +217,7 @@ public class FilePathTest {
         // should return number of files processed, whether or not they were copied or already current
         File src = temp.newFolder("src");
         File dst = temp.newFolder("dst");
-            File.createTempFile("foo", ".tmp", src);
+        Files.createTempFile(src.toPath(), "foo", ".tmp").toFile();
             FilePath fp = new FilePath(src);
             assertEquals(1, fp.copyRecursiveTo(new FilePath(dst)));
             // copy again should still report 1

@@ -76,6 +76,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -84,6 +86,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
 import jenkins.model.Jenkins;
 import jenkins.util.SystemProperties;
 import jenkins.util.xstream.SafeURLConverter;
@@ -156,6 +159,18 @@ public class XStream2 extends XStream {
         @Override
         protected XMLInputFactory createInputFactory() {
             final XMLInputFactory instance = XMLInputFactory.newInstance();
+            instance.setProperty(XMLInputFactory.SUPPORT_DTD, true);
+            Collection<String> allowList = Arrays.asList(
+            "https://checkstyle.org/dtds/configuration_1_3.dtd",
+            "https://checkstyle.org/dtds/suppressions_1_0.dtd"
+            );
+            instance.setXMLResolver((publicID, systemID, baseURI, namespace) -> {
+                if (allowList.contains(systemID)) {
+                    // returning null will cause the parser to resolve the entity
+                    return null;
+                }
+                throw new XMLStreamException("Loading of DTD was blocked to prevent XXE: " + systemID);
+            });
             instance.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
             instance.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
             return instance;

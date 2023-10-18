@@ -243,6 +243,8 @@ public final class XMLUtils {
      */
     private static void _transform(Source source, Result out) throws TransformerException {
         TransformerFactory factory = TransformerFactory.newInstance();
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
         // this allows us to use UTF-8 for storing data,
@@ -253,6 +255,25 @@ public final class XMLUtils {
 
     private static DocumentBuilderFactory newDocumentBuilderFactory() {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        String FEATURE = null;
+        try {
+            FEATURE = "http://xml.org/sax/features/external-parameter-entities";
+            documentBuilderFactory.setFeature(FEATURE, false);
+
+            FEATURE = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+            documentBuilderFactory.setFeature(FEATURE, false);
+
+            FEATURE = "http://xml.org/sax/features/external-general-entities";
+            documentBuilderFactory.setFeature(FEATURE, false);
+
+            documentBuilderFactory.setExpandEntityReferences(false);
+
+            documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException("The feature '"
+            + FEATURE + "' is not supported by your XML processor.", e);
+        }
         // Set parser features to prevent against XXE etc.
         // Note: setting only the external entity features on DocumentBuilderFactory instance
         // (ala how safeTransform does it for SAXTransformerFactory) does seem to work (was still

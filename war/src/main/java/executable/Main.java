@@ -40,6 +40,7 @@ import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -266,7 +267,7 @@ public class Main {
         // is deployed.
         File tempFile;
         try {
-            tempFile = File.createTempFile("dummy", "dummy");
+            tempFile = Files.createTempFile("dummy", "dummy").toFile();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -432,7 +433,7 @@ public class Main {
         }
         File myself;
         try {
-            myself = File.createTempFile("jenkins", ".jar", directory);
+            myself = Files.createTempFile(directory.toPath(), "jenkins", ".jar").toFile();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -467,7 +468,7 @@ public class Main {
         // put this jar in a file system so that we can load jars from there
         File tmp;
         try {
-            tmp = File.createTempFile(fileName, suffix, directory);
+            tmp = Files.createTempFile(directory.toPath(), fileName, suffix).toFile();
         } catch (IOException e) {
             String tmpdir = directory == null ? System.getProperty("java.io.tmpdir") : directory.getAbsolutePath();
             throw new UncheckedIOException("Jenkins failed to create a temporary file in " + tmpdir + ": " + e, e);
